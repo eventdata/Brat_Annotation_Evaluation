@@ -5,7 +5,7 @@ In this project, we compare different annotations for protest data. Annotations 
 In the ```main.py``` code, you can change the "path2folder" to the folder that includes your annotation folders. Besides, you can compare the annotations partially or exactly by changing "matchingType" to "Exact" or "Partial". If you use "Partial", you can select the percent of "threshold" for partal string matching. Its defualt is 75 (percent). 
 
 
-ReadAnnotations.py
+# ReadAnnotations.py
 
 ```Ann2Json(fileName)```
 
@@ -13,18 +13,21 @@ This function reads the annotation “fileName” and stores the data in the JSO
 If the line starts with “T”, it means it is an entity; and if it starts with “R”, it means it is a relation, like “actTar” and “srcAct”. 
 
 If the annotation is an entity, the line includes tag name, start index, end index and a phrase (one or more words).
-For example: 
+For example:
+
 T1	source 74 108	Comunidades indígenas y campesinas
 
 If phrase is not a consequence of words (i.e. the annotator selected words from different part of a sentence), the line includes tag name, start and end indexed of the first sequence of words; start and end indexes of second sequence of words; …  and phrase.
 
 For example: 
+
 T8	source 363 437;439 452	El vicepresidente de la Confederación de Nacionalidades Indígenas (CONAIE) Rafael Pandam
 
 
 If the  annotation is a relation, the line includes tag name, Arg1 which is the first entity and Arg2 which is the second entity.
 
-For example: 
+For example:
+
 R8	srcAct Arg1:T17 Arg2:T19	
 
 
@@ -35,7 +38,9 @@ I compare the two JSON files with each other with exact matching method. The inp
 This function compares all of the annotations for each tag name. The reference data is goldJson. If annotation in goldJson and annotatorJson are exactly same, the true positive will increase by one and that annotation will be removed from both  goldJson and annotatorJson. At the end of the process, the remaining annotations in the goldJson list are false negative (fn), which means the true annotations that annotator did not tag them. The remaining annotations in the annotatorJson list are false positive (fp), which means the false annotations that annotator tag them by mistake. Then, recall, precision and f-score can be computed by the following formulas. 
  
 Recall = tp / (tp + fn)
+
 Precision = tp / (tp + fp)
+
 f_score = (2 * Recall * Precision) / (Recall + Precision)
 
 In this comparison, since there may be several entity with the same name in different part of the text, I also consider their start and end indexes of the words. As an example of this case: 
@@ -60,6 +65,6 @@ To compare two relations, we need to compare both Arg1 and Arg2 in gold and anno
 This function is very similar to the previous function. However, we need to select the threshold for Arg1 and Arg2 comparison. 
 
 
-```Main.py ```
+# Main.py
 
 This program has the main function and you need to set “Exact” or “Partial” matching, “threshold” and folderPath of the annotation folders. In every round, it will automatically select one folder as a gold standard and compare it with the other folders. Then, it will compute average of precision, recall, and f-score for each entity and relation type and overall for each gold standard annotation.
